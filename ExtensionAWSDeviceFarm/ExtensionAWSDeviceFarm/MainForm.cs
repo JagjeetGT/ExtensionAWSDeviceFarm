@@ -34,6 +34,7 @@ namespace ExtensionAWSDeviceFarm
                 //this.ContextMenu = popUpMenu;
                 MenuItem File = mainMenu.MenuItems.Add("&File");
                 File.MenuItems.Add(new MenuItem("&New Project", new EventHandler(this.FileNew_clicked), Shortcut.CtrlN));
+                File.MenuItems.Add(new MenuItem("&New Upload", new EventHandler(this.FileUpload_clicked), Shortcut.CtrlN));
                 File.MenuItems.Add(new MenuItem("-"));
                 File.MenuItems.Add(new MenuItem("&Exit", new EventHandler(this.FileExit_clicked), Shortcut.CtrlX));
                 this.Menu = mainMenu;
@@ -45,6 +46,16 @@ namespace ExtensionAWSDeviceFarm
             }
 
         }
+
+        private void FileUpload_clicked(object sender, EventArgs e)
+        {
+            this.IsMdiContainer = true;
+            UploadAPK vw = new UploadAPK();
+            vw.MdiParent = this;
+            // HideForms();
+            vw.Show();
+        }
+
         private void Form1_Shown(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Maximized;

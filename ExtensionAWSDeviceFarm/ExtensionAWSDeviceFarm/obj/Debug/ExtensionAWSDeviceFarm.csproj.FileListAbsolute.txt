@@ -28,3 +28,4 @@ D:\Projects\Upwork\AWSDeviceFarm\ExtensionAWSDeviceFarm\ExtensionAWSDeviceFarm\o
 D:\Projects\Upwork\AWSDeviceFarm\ExtensionAWSDeviceFarm\ExtensionAWSDeviceFarm\obj\Debug\ExtensionAWSDeviceFarm.keysConfiguration.resources
 D:\Projects\Upwork\AWSDeviceFarm\ExtensionAWSDeviceFarm\ExtensionAWSDeviceFarm\obj\Debug\ExtensionAWSDeviceFarm.ViewDevices.resources
 D:\Projects\Upwork\AWSDeviceFarm\ExtensionAWSDeviceFarm\ExtensionAWSDeviceFarm\obj\Debug\ExtensionAWSDeviceFarm.ProjectMaster.resources
+D:\Projects\Upwork\AWSDeviceFarm\ExtensionAWSDeviceFarm\ExtensionAWSDeviceFarm\obj\Debug\ExtensionAWSDeviceFarm.UploadAPK.resources

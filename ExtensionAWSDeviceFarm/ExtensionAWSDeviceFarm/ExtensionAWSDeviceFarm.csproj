@@ -68,6 +68,12 @@
     <Compile Include="ProjectMaster.Designer.cs">
       <DependentUpon>ProjectMaster.cs</DependentUpon>
     </Compile>
+    <Compile Include="UploadAPK.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UploadAPK.Designer.cs">
+      <DependentUpon>UploadAPK.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewDevices.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectMaster.resx">
       <DependentUpon>ProjectMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UploadAPK.resx">
+      <DependentUpon>UploadAPK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewDevices.resx">
       <DependentUpon>ViewDevices.cs</DependentUpon>

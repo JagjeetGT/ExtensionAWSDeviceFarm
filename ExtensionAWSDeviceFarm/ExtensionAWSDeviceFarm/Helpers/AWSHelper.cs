@@ -2,8 +2,10 @@
 using Amazon.DeviceFarm;
 using Amazon.DeviceFarm.Model;
 using Amazon.S3;
+using Amazon.S3.Transfer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,10 @@ namespace ExtensionAWSDeviceFarm.Helpers
     {
         public static string AwsAccessKey { get; set; }
         public static string AwsSecretKey { get; set; }
+        
+
+     
+        #region DeviceFarm
         public static AmazonDeviceFarmClient client { get; set; }
         public static AmazonDeviceFarmClient GetAmazonDeviceFarmClient()
         {
@@ -21,9 +27,9 @@ namespace ExtensionAWSDeviceFarm.Helpers
             {
                 var bucketRegion = RegionEndpoint.USWest2;
                 client = new AmazonDeviceFarmClient(bucketRegion);
-#if DEBUG
-                client = new AmazonDeviceFarmClient(AwsAccessKey, AwsSecretKey, bucketRegion);
-#endif
+                #if DEBUG
+                                client = new AmazonDeviceFarmClient(AwsAccessKey, AwsSecretKey, bucketRegion);
+                #endif
                 return client;
             }
             catch (Exception ee)
@@ -176,5 +182,74 @@ namespace ExtensionAWSDeviceFarm.Helpers
                 return null;
             }
         }
+        public static Upload UploadFile(string projectid,string Name)
+        {
+            try
+            {
+
+                var response = client.CreateUpload(new CreateUploadRequest
+                {
+                    Name = Name,
+                    Type = "ANDROID_APP",
+                    ProjectArn = projectid // You can get the project ARN by using the list-projects CLI command.
+                });
+
+                Upload upload = response.Upload;
+                return upload;
+            }
+            catch (Exception ee)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+
+        #region S3 bucket
+        private static AmazonS3Client GetAmazonS3Client()
+        {
+            var bucketRegion = RegionEndpoint.USWest2;
+            var s3Client = new AmazonS3Client(bucketRegion);
+            s3Client = new AmazonS3Client(AwsAccessKey, AwsSecretKey, bucketRegion);
+            return s3Client;
+        }
+
+        public static async Task<string> UploadFileStreamToAmazonS3Async(Stream fileStream, string fileName = "")
+        {
+            var s3Client = GetAmazonS3Client();
+            var fileTransferUtility = new TransferUtility(s3Client);
+
+            var req = new TransferUtilityUploadRequest
+            {
+                //BucketName = BucketName,
+                Key = fileName,
+                InputStream = fileStream
+            };
+
+            await fileTransferUtility.UploadAsync(req);
+            //var filePath = $"https://{s3Bucket}.s3.us-east-2.amazonaws.com/{fileName}";
+            return fileName;
+        }
+
+        public static async Task<string> UploadBase64ToAmazonS3Async(byte[] imageBytes, string extension = ".png", string fileName = "")
+        {
+            var s3Client = GetAmazonS3Client();
+            var fileTransferUtility = new TransferUtility(s3Client);
+
+            //if (string.IsNullOrEmpty(fileName))
+            //    fileName = CommonClass.Common.GetCurrentDateTime.ToString("ddMMyyyyHHmmss") + "_" + extension;
+
+            var req = new TransferUtilityUploadRequest
+            {
+                //BucketName = BucketName,
+                Key = fileName,
+                InputStream = new MemoryStream(imageBytes)
+            };
+            await fileTransferUtility.UploadAsync(req);
+            //var filePath = $"https://{s3Bucket}.s3.us-east-2.amazonaws.com/{fileName}";
+            return fileName;
+        }
+        #endregion
+
     }
 }
