@@ -49,17 +49,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Helpers\CommonHelper.cs" />
+    <Compile Include="keysConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="keysConfiguration.Designer.cs">
+      <DependentUpon>keysConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectMaster.Designer.cs">
+      <DependentUpon>ProjectMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewDevices.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewDevices.Designer.cs">
+      <DependentUpon>ViewDevices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ViewRuns.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewRuns.Designer.cs">
+      <DependentUpon>ViewRuns.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AWSHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="keysConfiguration.resx">
+      <DependentUpon>keysConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectMaster.resx">
+      <DependentUpon>ProjectMaster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewDevices.resx">
+      <DependentUpon>ViewDevices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewRuns.resx">
+      <DependentUpon>ViewRuns.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -82,7 +119,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

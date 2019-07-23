@@ -12,51 +12,19 @@ namespace ExtensionAWSDeviceFarm.Helpers
 {
     public static class AWSHelper
     {
-
-        public static string AwsAccessKey = "AKIAI3JSPTK2NTZ7CNHA";
-        ////{
-        ////    get
-        ////    {
-        ////        return Convert.ToString(ConfigurationManager.AppSettings["awsAccessKey"]);
-        ////    }
-        ////}
-
-        public static string AwsSecretKey = "YKnmgTvduMq3Fvx7k0nm6d2X+za+x9ZlTEoN6yFS";
-        //{
-        //    get
-        //    {
-        //        return Convert.ToString(ConfigurationManager.AppSettings["awsSecretKey"]);
-        //    }
-        //}
-
-
-        //public static string BucketName
-        //{
-        //    get
-        //    {
-        //        return Convert.ToString(ConfigurationManager.AppSettings["bucketName"]);
-        //    }
-        //}
-        private static AmazonS3Client GetAmazonS3Client()
-        {
-            var bucketRegion = RegionEndpoint.USWest1;
-            var s3Client = new AmazonS3Client(bucketRegion);
-#if DEBUG
-            s3Client = new AmazonS3Client(AwsAccessKey, AwsSecretKey, bucketRegion);
-#endif
-
-            return s3Client;
-        }
-        private static AmazonDeviceFarmClient GetAmazonDeviceFarmClient()
+        public static string AwsAccessKey { get; set; }
+        public static string AwsSecretKey { get; set; }
+        public static AmazonDeviceFarmClient client { get; set; }
+        public static AmazonDeviceFarmClient GetAmazonDeviceFarmClient()
         {
             try
             {
                 var bucketRegion = RegionEndpoint.USWest2;
-                var deviceclient = new AmazonDeviceFarmClient(bucketRegion);
+                client = new AmazonDeviceFarmClient(bucketRegion);
 #if DEBUG
-                deviceclient = new AmazonDeviceFarmClient(AwsAccessKey, AwsSecretKey, bucketRegion);
+                client = new AmazonDeviceFarmClient(AwsAccessKey, AwsSecretKey, bucketRegion);
 #endif
-                return deviceclient;
+                return client;
             }
             catch (Exception ee)
             {
@@ -69,7 +37,7 @@ namespace ExtensionAWSDeviceFarm.Helpers
         {
             try
             {
-                var client = GetAmazonDeviceFarmClient();
+                
                 var response = client.GetAccountSettings(new GetAccountSettingsRequest
                 {
                 });
@@ -92,7 +60,7 @@ namespace ExtensionAWSDeviceFarm.Helpers
         {
             try
             {
-                var client = GetAmazonDeviceFarmClient();
+
                 var response = client.ListProjects(new ListProjectsRequest
                 {
                     //Arn = "arn:aws:devicefarm:us-west-2:123456789101:project:7ad300ed-8183-41a7-bf94-12345EXAMPLE",
@@ -107,13 +75,12 @@ namespace ExtensionAWSDeviceFarm.Helpers
                 throw;
             }
         }
-
         public static List<Run> GetRuns(string ProjectId)
         {
             var runs = new List<Run>();
             try
             {
-                var client = GetAmazonDeviceFarmClient();
+                
                 var response = client.ListRuns(new ListRunsRequest
                 {
                     Arn = ProjectId,
@@ -130,16 +97,84 @@ namespace ExtensionAWSDeviceFarm.Helpers
                 throw;
             }
         }
-        public static List<Device> GetDevices()
+
+        //public static Run CreateRun(string ProjectId)
+        //{
+        //    var runs = new List<Run>();
+        //    try
+        //    {
+
+        //        var response = client.CreateUpload(new CreateUploadRequest
+        //        {
+                    
+        //            Name = "MyAppiumPythonUpload",
+        //            Type = "APPIUM_PYTHON_TEST_PACKAGE",
+        //            ProjectArn = "arn:aws:devicefarm:us-west-2:123456789101:project:EXAMPLE-GUID-123-456" // You can get the project ARN by using the list-projects CLI command.
+        //        });
+
+        //        Upload upload = response.Upload;
+
+
+        //        if (response != null)
+        //        {
+        //            runs = response.Runs;
+        //        }
+        //        return runs;
+        //    }
+        //    catch (Exception ee)
+        //    {
+        //        throw;
+        //    }
+        //}
+        public static List<Device> GetDevices(string ProjectId)
         {
-            List<Device> devices = new List<Device>();
-            var client = GetAmazonDeviceFarmClient();
+            var devices = new List<Device>();
+            try
+            {
+
+                var response = client.ListDevices(new ListDevicesRequest
+                {
+                    Arn = ProjectId,
+                    //NextToken = "RW5DdDJkMWYwZjM2MzM2VHVpOHJIUXlDUXlhc2QzRGViYnc9SEXAMPLE" // A dynamically generated value, used for paginating results.
+                });
+                if (response != null)
+                {
+                    devices = response.Devices;
+                }
+                return devices;
+            }
+            catch (Exception ee)
+            {
+                throw;
+            }
+        }
+        public static List<Device> GetDevices( )
+        {
+            List<Device> devices = new List<Device>();           
             var response = client.ListDevices(new ListDevicesRequest { });
             if (response != null)
             {
                 devices = response.Devices;
             }
             return devices;
+        }
+
+        public static Project CreateProject(string Name)
+        {
+            try
+            {
+                var response = client.CreateProject(new CreateProjectRequest
+                {
+                    Name = Name // A project in Device Farm is a workspace that contains test runs. A run is a test of a single app against one or more devices.
+                });
+
+                Project project = response.Project;
+                return project;
+            }
+            catch(Exception ee)
+            {
+                return null;
+            }
         }
     }
 }
